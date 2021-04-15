@@ -18,9 +18,14 @@ export default class Obstacle {
 
     update(backgroundSpeed) {
         this.currentPosX -= backgroundSpeed
+        this.currentFrameCount++
         if (this.currentPosX <= (this.sizeWidth * (-1))) {
             this.visible = false
         }
+        if (this.currentFrameCount >= 60) {
+            this.currentFrameCount = 0
+        }
+
     }
 
     getAnimationFrame() {
