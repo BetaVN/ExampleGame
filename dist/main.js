@@ -19,6 +19,94 @@ eval("/* module decorator */ module = __webpack_require__.nmd(module);\nvar __WE
 
 /***/ }),
 
+/***/ "./src/Core/Background.js":
+/*!********************************!*\
+  !*** ./src/Core/Background.js ***!
+  \********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (/* binding */ Background)\n/* harmony export */ });\n/* harmony import */ var _assets_images_background_png__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../assets/images/background.png */ \"./src/assets/images/background.png\");\n\r\n\r\nclass Background {\r\n    constructor() {\r\n        this.backgroundImage = new Image()\r\n        this.backgroundImage.src = _assets_images_background_png__WEBPACK_IMPORTED_MODULE_0__\r\n        this.currentPosX = 0\r\n        this.backgroundScrollSpeed = 4\r\n    }\r\n\r\n    update() {\r\n        this.currentPosX -= this.backgroundScrollSpeed\r\n        if (this.currentPosX <= -800) {\r\n            this.currentPosX = 0\r\n        }\r\n    }\r\n}\n\n//# sourceURL=webpack://examplegame/./src/Core/Background.js?");
+
+/***/ }),
+
+/***/ "./src/Core/Gameloop.js":
+/*!******************************!*\
+  !*** ./src/Core/Gameloop.js ***!
+  \******************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (/* binding */ Gameloop)\n/* harmony export */ });\n/* harmony import */ var _Core_Input_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../Core/Input.js */ \"./src/Core/Input.js\");\n/* harmony import */ var _Core_Physics_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../Core/Physics.js */ \"./src/Core/Physics.js\");\n/* harmony import */ var _Core_Renderer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../Core/Renderer.js */ \"./src/Core/Renderer.js\");\n/* harmony import */ var _Manager_ObstacleManager_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../Manager/ObstacleManager.js */ \"./src/Manager/ObstacleManager.js\");\n/* harmony import */ var _Manager_ScoreManager_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../Manager/ScoreManager.js */ \"./src/Manager/ScoreManager.js\");\n/* harmony import */ var _PlayerEntity_Player_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../PlayerEntity/Player.js */ \"./src/PlayerEntity/Player.js\");\n/* harmony import */ var _Background_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./Background.js */ \"./src/Core/Background.js\");\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\nclass Gameloop {\r\n    constructor(context) {\r\n        this.context = context\r\n        this.player = new _PlayerEntity_Player_js__WEBPACK_IMPORTED_MODULE_5__.default()\r\n        this.obstacleManager = new _Manager_ObstacleManager_js__WEBPACK_IMPORTED_MODULE_3__.default()\r\n        this.scoreManager = new _Manager_ScoreManager_js__WEBPACK_IMPORTED_MODULE_4__.default()\r\n        this.physics = new _Core_Physics_js__WEBPACK_IMPORTED_MODULE_1__.default()\r\n        this.renderer = new _Core_Renderer_js__WEBPACK_IMPORTED_MODULE_2__.default()\r\n        this.input = new _Core_Input_js__WEBPACK_IMPORTED_MODULE_0__.default()\r\n        this.background = new _Background_js__WEBPACK_IMPORTED_MODULE_6__.default()\r\n        this.upPressed = false\r\n    }\r\n\r\n    processNewInput() {\r\n        this.upPressed = this.input.getInputState()\r\n    }\r\n\r\n    updateObjects() {\r\n        this.player.update(this.upPressed)\r\n        this.obstacleManager.update()\r\n        this.scoreManager.update()\r\n        this.background.update()\r\n        this.physics.checkForCollision(this.player, this.obstacleManager)\r\n        this.input.update()\r\n    }\r\n\r\n    render() {\r\n        this.renderer.render(this.context, this.player, this.obstacleManager, this.background, this.scoreManager)\r\n    }\r\n\r\n    runGameLoop() {\r\n        this.processNewInput()\r\n        this.updateObjects()\r\n        this.render()\r\n        if (!this.checkGameOver()) {\r\n            requestAnimationFrame(() => {\r\n                this.runGameLoop()\r\n            })\r\n        }\r\n    }\r\n    \r\n    checkGameOver() {\r\n        return this.physics.collisionDetected\r\n    }\r\n}\n\n//# sourceURL=webpack://examplegame/./src/Core/Gameloop.js?");
+
+/***/ }),
+
+/***/ "./src/Core/Input.js":
+/*!***************************!*\
+  !*** ./src/Core/Input.js ***!
+  \***************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (/* binding */ Input)\n/* harmony export */ });\nclass Input {\r\n    constructor() {\r\n        this.upPressed = false\r\n        this.addInputHandler()\r\n    }\r\n\r\n    addInputHandler() {\r\n        document.addEventListener('keydown', this.handleDownPressed, false)\r\n    }\r\n\r\n    handleDownPressed(event) {\r\n        if (event.keyCode == 38) {\r\n            this.upPressed = true\r\n        }\r\n    }\r\n    getInputState() {\r\n        return this.upPressed\r\n    }\r\n\r\n    update() {\r\n        this.upPressed = false\r\n    }\r\n}\n\n//# sourceURL=webpack://examplegame/./src/Core/Input.js?");
+
+/***/ }),
+
+/***/ "./src/Core/Physics.js":
+/*!*****************************!*\
+  !*** ./src/Core/Physics.js ***!
+  \*****************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (/* binding */ Physics)\n/* harmony export */ });\nclass Physics {\r\n    constructor() {\r\n        this.collisionDetected = false\r\n    }\r\n\r\n    checkForCollision(player, obstacleManager) {\r\n        obstacleManager.obstacleList.forEach(obstacle => {\r\n            if ((player.currentPosX + 20 < obstacle.currentPosX + obstacle.sizeWidth) &&\r\n                (player.currentPosX + player.sizeWidth - 16 > obstacle.currentPosX) &&\r\n                (player.currentPosY < obstacle.currentPosY +  obstacle.sizeHeight) &&\r\n                (player.currentPosY + player.sizeHeight > obstacle.currentPosY)) {\r\n                    this.collisionDetected = true\r\n                }\r\n        })\r\n    }\r\n}\n\n//# sourceURL=webpack://examplegame/./src/Core/Physics.js?");
+
+/***/ }),
+
+/***/ "./src/Core/Renderer.js":
+/*!******************************!*\
+  !*** ./src/Core/Renderer.js ***!
+  \******************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (/* binding */ Renderer)\n/* harmony export */ });\nclass Renderer {\r\n    constructor() {\r\n\r\n    }\r\n\r\n    render(context, player, obstacleManager, background, scoreManager) {\r\n        this.renderPlayer(context, player)\r\n        this.renderObstacle(context, obstacleManager)\r\n        this.renderBackground(context, background)\r\n        this.renderScore(context, scoreManager)\r\n    }\r\n\r\n    renderPlayer(context, player) {\r\n        console.log(player.characterSprite)\r\n        context.drawImage(player.characterSprite, 48 * player.getAnimationFrame(), 0, 48, 48, player.currentPosX, player.currentPosY, player.sizeWidth, player.sizeHeight)\r\n    }\r\n\r\n    renderObstacle(context, obstacleManager) {\r\n        obstacleManager.obstacleList.forEach(obstacle => {\r\n            context.drawImage(obstacle.sprite, 48 * obstacle.getAnimationFrame(), 0, 48, 48, obstacle.currentPosX, obstacle.currentPosY, obstacle.sizeWidth, obstacle.sizeHeight)\r\n        })\r\n    }\r\n\r\n    renderBackground(context, background) {\r\n        context.drawImage(background.backgroundImage, background.currentPosX, 0, 800, 600)\r\n        context.drawImage(background.backgroundImage, background.currentPosX + 800, 0, 800, 600)\r\n    }\r\n\r\n    renderScore(context, scoreManager) {\r\n        context.font =\"20px Arial\"\r\n        context.fillText((100000 + scoreManager.score).toString().substring(1), 700, 30)\r\n    }\r\n}\n\n//# sourceURL=webpack://examplegame/./src/Core/Renderer.js?");
+
+/***/ }),
+
+/***/ "./src/Manager/ObstacleManager.js":
+/*!****************************************!*\
+  !*** ./src/Manager/ObstacleManager.js ***!
+  \****************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (/* binding */ ObstacleManager)\n/* harmony export */ });\n/* harmony import */ var _Util_Utils_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../Util/Utils.js */ \"./src/Util/Utils.js\");\n/* harmony import */ var _ObstacleEntity_Obstacle_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../ObstacleEntity/Obstacle.js */ \"./src/ObstacleEntity/Obstacle.js\");\n/* harmony import */ var _assets_images_obstacle1_png__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../assets/images/obstacle1.png */ \"./src/assets/images/obstacle1.png\");\n\r\n\r\n\r\n\r\nclass ObstacleManager {\r\n    constructor() {\r\n        this.obstacleList = []\r\n        this.obstacleGenerationCooldown = 150\r\n        this.currentCooldown = 0\r\n    }\r\n\r\n    obstacleGeneration() {\r\n        if(this.currentCooldown <= 0) {\r\n            let size = _Util_Utils_js__WEBPACK_IMPORTED_MODULE_0__.default.getRndNumber(50, 80)\r\n            var newObstacle = new _ObstacleEntity_Obstacle_js__WEBPACK_IMPORTED_MODULE_1__.default(_assets_images_obstacle1_png__WEBPACK_IMPORTED_MODULE_2__, size, size)\r\n            this.obstacleList.push(newObstacle)\r\n            this.currentCooldown = _Util_Utils_js__WEBPACK_IMPORTED_MODULE_0__.default.getRndNumber(Math.floor(this.obstacleGenerationCooldown * 0.5), this.obstacleGenerationCooldown)\r\n        }\r\n        else {\r\n            this.currentCooldown--\r\n        }\r\n    }\r\n\r\n    removeInvalidObstacles() {\r\n        this.obstacleList.forEach(obstacle => {\r\n            if (obstacle.currentPosX < -80) {\r\n                let index = this.obstacleList.indexOf(obstacle)\r\n                this.obstacleList.splice(index, 1)\r\n            }\r\n        })\r\n    }\r\n\r\n    update() {\r\n        this.obstacleGeneration()\r\n        this.removeInvalidObstacles()\r\n    }\r\n}\n\n//# sourceURL=webpack://examplegame/./src/Manager/ObstacleManager.js?");
+
+/***/ }),
+
+/***/ "./src/Manager/SceneManager.js":
+/*!*************************************!*\
+  !*** ./src/Manager/SceneManager.js ***!
+  \*************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (/* binding */ SceneManager)\n/* harmony export */ });\n/* harmony import */ var _Scene_GameplayScene__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../Scene/GameplayScene */ \"./src/Scene/GameplayScene.js\");\n\r\n\r\nclass SceneManager {\r\n    constructor(context) {\r\n        this.context = context\r\n        this.currentScene = 0\r\n    }\r\n\r\n    runGame() {\r\n        switch(this.currentScene) {\r\n            case 0: {\r\n                var newGameplayScene = new _Scene_GameplayScene__WEBPACK_IMPORTED_MODULE_0__.default(this.context)\r\n                console.log(\"Running new game\")\r\n                newGameplayScene.runGameplay()\r\n                this.currentScene = 1\r\n                break\r\n            }\r\n            default: {\r\n                //Game Over\r\n            }\r\n        }\r\n    }\r\n}\n\n//# sourceURL=webpack://examplegame/./src/Manager/SceneManager.js?");
+
+/***/ }),
+
+/***/ "./src/Manager/ScoreManager.js":
+/*!*************************************!*\
+  !*** ./src/Manager/ScoreManager.js ***!
+  \*************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (/* binding */ ScoreManager)\n/* harmony export */ });\nclass ScoreManager {\r\n    constructor() {\r\n        this.currentScore = 0\r\n        this.framePerScore = 12\r\n        this.currentFrame = 0\r\n    }\r\n\r\n    update() {\r\n        if (this.currentFrame < this.framePerScore) {\r\n            this.currentFrame++\r\n        } \r\n        else {\r\n            this.score++\r\n            this.currentFrame = 0\r\n        }\r\n    }\r\n}\n\n//# sourceURL=webpack://examplegame/./src/Manager/ScoreManager.js?");
+
+/***/ }),
+
 /***/ "./src/ObstacleEntity/Obstacle.js":
 /*!****************************************!*\
   !*** ./src/ObstacleEntity/Obstacle.js ***!
@@ -26,7 +114,40 @@ eval("/* module decorator */ module = __webpack_require__.nmd(module);\nvar __WE
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (/* binding */ Obstacle)\n/* harmony export */ });\nclass Obstacle {\r\n    constructor(spriteFile, flyingObstacle = false, animationFrameCount = 0) {\r\n        this.sprite = new Image();\r\n        this.sprite.src = spriteFile;    \r\n        this.currentPosX = 800\r\n        if (flyingObstacle) {\r\n            this.currentPosY = 385\r\n        }\r\n        else {\r\n            this.currentPosY = 15\r\n        }\r\n        this.maxFrameCount = animationFrameCount\r\n        this.currentFrameCount = 0\r\n    }\r\n}\n\n//# sourceURL=webpack://examplegame/./src/ObstacleEntity/Obstacle.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (/* binding */ Obstacle)\n/* harmony export */ });\nclass Obstacle {\r\n    constructor(spriteFile, width, height, flyingObstacle = false, animationFrameCount = 0) {\r\n        this.sprite = new Image();\r\n        this.sprite.src = spriteFile;\r\n        this.sizeWidth = width;\r\n        this.sizeHeight = height;    \r\n        this.currentPosX = 800\r\n        if (flyingObstacle) {\r\n            this.currentPosY = 600 - 213 - this.sizeHeight\r\n        }\r\n        else {\r\n            this.currentPosY = 600 - 13 - this.sizeHeight\r\n        }\r\n        this.maxFrameCount = animationFrameCount\r\n        this.currentFrameCount = 0\r\n        this.visible = true\r\n    }\r\n\r\n    update(backgroundSpeed) {\r\n        this.currentPosX -= backgroundSpeed\r\n        if (this.currentPosX <= (this.sizeWidth * (-1))) {\r\n            this.visible = false\r\n        }\r\n    }\r\n\r\n    getAnimationFrame() {\r\n        return Math.floor(this.currentFrameCount / (Math.floor(60 / this.maxFrameCount + 1))) % (this.maxFrameCount + 1)\r\n    }\r\n}\n\n//# sourceURL=webpack://examplegame/./src/ObstacleEntity/Obstacle.js?");
+
+/***/ }),
+
+/***/ "./src/PlayerEntity/Player.js":
+/*!************************************!*\
+  !*** ./src/PlayerEntity/Player.js ***!
+  \************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (/* binding */ Player)\n/* harmony export */ });\n/* harmony import */ var _assets_images_char_sprite_png__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../assets/images/char_sprite.png */ \"./src/assets/images/char_sprite.png\");\n\r\n\r\nclass Player {\r\n    constructor() {\r\n        this.characterSprite = new Image()\r\n        this.characterSprite.src = _assets_images_char_sprite_png__WEBPACK_IMPORTED_MODULE_0__\r\n        this.currentFrame = 0\r\n        this.jumping = false\r\n        this.descending = false\r\n        this.currentJumpHeight = 0\r\n        this.jumpingModifier = 6\r\n        this.maxJumpHeight = 200\r\n        this.currentPosX = 15\r\n        this.currentPosY = 515\r\n        this.basePosY = 515\r\n        this.sizeWidth = 70\r\n        this.sizeHeight = 70\r\n    }\r\n\r\n    update(input) {\r\n        this.currentFrame += 1\r\n        if ((input) && (!this.jumping) && (!this.descending)) {\r\n            this.jumping = true\r\n        }\r\n        if ((this.jumping) && (!this.descending)) {\r\n            this.currentJumpHeight += this.jumpingModifier\r\n        }\r\n        if (this.currentJumpHeight > this.maxJumpHeight) {\r\n            this.currentJumpHeight = this.maxJumpHeight\r\n            this.descending = true\r\n            this.jumping = false\r\n        }\r\n        if (this.descending) {\r\n            this.currentJumpHeight -= this.jumpingModifier\r\n        }\r\n        if ((this.descending) && (this.currentJumpHeight <= 0)) {\r\n            this.descending = false\r\n        }\r\n        this.currentPosY = this.basePosY - this.currentJumpHeight\r\n        if (this.currentFrame >= 60) {\r\n            this.currentFrame = 0\r\n        }\r\n    }\r\n\r\n    getAnimationFrame() {\r\n        if ((this.jumping) || (this.descending)) {\r\n            return 2\r\n        }\r\n        else {\r\n            return Math.floor(this.currentFrame / 20) % 3\r\n        }\r\n    }\r\n}\n\n//# sourceURL=webpack://examplegame/./src/PlayerEntity/Player.js?");
+
+/***/ }),
+
+/***/ "./src/Scene/GameplayScene.js":
+/*!************************************!*\
+  !*** ./src/Scene/GameplayScene.js ***!
+  \************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (/* binding */ GameplayScene)\n/* harmony export */ });\n/* harmony import */ var _Core_Gameloop_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../Core/Gameloop.js */ \"./src/Core/Gameloop.js\");\n\r\n\r\nclass GameplayScene {\r\n    constructor(context) {\r\n        this.context = context\r\n        this.gameloop = new _Core_Gameloop_js__WEBPACK_IMPORTED_MODULE_0__.default(this.context)\r\n    }\r\n\r\n    runGameplay() {\r\n        requestAnimationFrame(() => {\r\n            this.gameloop.runGameLoop()\r\n        })\r\n    }\r\n}\n\n//# sourceURL=webpack://examplegame/./src/Scene/GameplayScene.js?");
+
+/***/ }),
+
+/***/ "./src/Util/Utils.js":
+/*!***************************!*\
+  !*** ./src/Util/Utils.js ***!
+  \***************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (/* binding */ Utils)\n/* harmony export */ });\nclass Utils {\r\n    static getRndNumber(min, max) {\r\n        return Math.floor(Math.random() * (max - min + 1) ) + min\r\n    }\r\n}\n\n//# sourceURL=webpack://examplegame/./src/Util/Utils.js?");
 
 /***/ }),
 
@@ -59,7 +180,7 @@ eval("module.exports = __webpack_require__.p + \"dccd78b70f2f0026eed3.png\";\n\n
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
-eval("module.exports = __webpack_require__.p + \"7f068006c2d2b9206a64.png\";\n\n//# sourceURL=webpack://examplegame/./src/assets/images/obstacle1.png?");
+eval("module.exports = __webpack_require__.p + \"c6e6ad219c262594d647.png\";\n\n//# sourceURL=webpack://examplegame/./src/assets/images/obstacle1.png?");
 
 /***/ }),
 
@@ -70,7 +191,7 @@ eval("module.exports = __webpack_require__.p + \"7f068006c2d2b9206a64.png\";\n\n
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lodash */ \"./node_modules/lodash/lodash.js\");\n/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var _assets_images_background_png__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./assets/images/background.png */ \"./src/assets/images/background.png\");\n/* harmony import */ var _assets_images_char_sprite_png__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./assets/images/char_sprite.png */ \"./src/assets/images/char_sprite.png\");\n/* harmony import */ var _ObstacleEntity_Obstacle_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./ObstacleEntity/Obstacle.js */ \"./src/ObstacleEntity/Obstacle.js\");\n/* harmony import */ var _assets_images_obstacle1_png__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./assets/images/obstacle1.png */ \"./src/assets/images/obstacle1.png\");\n\r\n\r\n\r\n\r\n\r\n\r\n\r\nfunction screenInit() {\r\n    var background = document.createElement('canvas')\r\n    var context = background.getContext('2d')\r\n\r\n    background.width = 800\r\n    background.height = 600\r\n\r\n    document.body.appendChild(background)\r\n    return context\r\n}\r\n\r\nfunction addInputHandlers() {\r\n    document.addEventListener('keydown', handleDownPressed, false)\r\n}\r\n\r\nfunction handleUpPressed() {\r\n\r\n}\r\n\r\nfunction handleDownPressed(event) {\r\n    if (event.keyCode == 38) {\r\n        inputInfo.upPressed = true\r\n    }\r\n    else if (event.keyCode == 40) {\r\n        inputInfo.downPressed = true\r\n    }\r\n    console.log(inputInfo)\r\n}\r\n\r\nfunction drawBackground(context, backgroundImage, backgroundInfo) {\r\n    backgroundInfo.posX -= backgroundInfo.speed\r\n    context.drawImage(backgroundImage, backgroundInfo.posX, 0, 800, 600)\r\n    context.drawImage(backgroundImage, backgroundInfo.posX + globalConstants.screenWidth, 0, 800, 600)\r\n    if (backgroundInfo.posX <= globalConstants.screenWidth * (-1)) {\r\n        backgroundInfo.posX = 0\r\n    }\r\n}\r\n\r\nfunction drawCharacter(context, characterSprite, characterInfo) {\r\n    characterInfo.currentFrame += 1\r\n    if ((inputInfo.upPressed) && (!characterInfo.jumping) && (!characterInfo.descending)) {\r\n        characterInfo.jumping = true\r\n    }\r\n    if ((characterInfo.jumping) && (!characterInfo.descending)) {\r\n        characterInfo.currentJumpHeight += characterInfo.jumpingModifier\r\n    }\r\n    if (characterInfo.currentJumpHeight > characterInfo.maxJumpHeight) {\r\n        characterInfo.currentJumpHeight = characterInfo.maxJumpHeight\r\n        characterInfo.descending = true\r\n        characterInfo.jumping = false\r\n    }\r\n    if (characterInfo.descending) {\r\n        characterInfo.currentJumpHeight -= characterInfo.jumpingModifier\r\n    }\r\n    if ((characterInfo.descending) && (characterInfo.currentJumpHeight <= 0)) {\r\n        characterInfo.descending = false\r\n    }\r\n    let currentAnimationFrame = Math.floor(characterInfo.currentFrame / 20) % 3\r\n    if ((characterInfo.jumping) || (characterInfo.descending)) {\r\n        currentAnimationFrame = 2\r\n    }\r\n    context.drawImage(characterSprite, 48 * currentAnimationFrame, 0, 48, 48, globalConstants.characterBasePositionX, globalConstants.characterBasePositionY - characterInfo.currentJumpHeight, globalConstants.characterSpriteSize, globalConstants.characterSpriteSize)\r\n    if (characterInfo.currentFrame > 60) {\r\n        characterInfo.currentFrame = 0\r\n    }\r\n    inputInfo.upPressed = false\r\n    inputInfo.downPressed = false\r\n}\r\n\r\nfunction drawObstacle(context, obstacleInfo) {\r\n    obstacleGeneration(obstacleInfo)\r\n    obstacleInfo.obstacleList.forEach(obstacle => {\r\n        context.drawImage(obstacle.sprite, 48 * obstacle.currentAnimationFrame, 0, 48, 48, obstacle.currentPosX, obstacle.currentPosY, 50, 50)\r\n        obstacle.currentPosX -= backgroundInfo.speed\r\n    })\r\n\r\n}\r\n\r\nfunction obstacleGeneration(obstacleInfo) {\r\n    if(obstacleInfo.currentCooldown <= 0) {\r\n        var newObstacle = new _ObstacleEntity_Obstacle_js__WEBPACK_IMPORTED_MODULE_3__.default(_assets_images_obstacle1_png__WEBPACK_IMPORTED_MODULE_4__)\r\n        obstacleInfo.obstacleList.push(newObstacle)\r\n        obstacleInfo.currentCooldown = obstacleInfo.obstacleGenerationCooldown\r\n    }\r\n}\r\n\r\nfunction gameLoop() {\r\n    drawBackground(screenContext, backgroundImage, backgroundInfo)\r\n    drawCharacter(screenContext, characterSprite, characterInfo)\r\n    drawObstacle(screenContext, obstacleInfo)\r\n    requestAnimationFrame(gameLoop)\r\n}\r\n\r\nvar screenContext = screenInit()\r\naddInputHandlers()\r\nvar backgroundImage = new Image()\r\nbackgroundImage.src = _assets_images_background_png__WEBPACK_IMPORTED_MODULE_1__\r\nvar characterSprite = new Image()\r\ncharacterSprite.src = _assets_images_char_sprite_png__WEBPACK_IMPORTED_MODULE_2__\r\nvar globalConstants = {\r\n    screenWidth: 800,\r\n    screenHeight: 600,\r\n    characterBasePositionX: 15,\r\n    characterBasePositionY: 515,\r\n    characterSpriteSize: 70\r\n}\r\nvar backgroundInfo = {\r\n    posX: 0,\r\n    speed: 2\r\n}\r\nvar characterInfo = {\r\n    currentFrame: 0,\r\n    jumping: false,\r\n    descending: false,\r\n    currentJumpHeight: 0,\r\n    jumpingModifier: 6,\r\n    maxJumpHeight: 200\r\n}\r\nvar obstacleInfo = {\r\n    obstacleList: [],\r\n    obstacleGenerationCooldown: 180,\r\n    currentCooldown: 0\r\n}\r\nvar inputInfo = {\r\n    upPressed: false,\r\n    downPressed: false\r\n}\r\n\r\nwindow.onload = function() {\r\n    requestAnimationFrame(gameLoop)\r\n}\r\n\r\n\r\n\n\n//# sourceURL=webpack://examplegame/./src/index.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lodash */ \"./node_modules/lodash/lodash.js\");\n/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var _Manager_SceneManager_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Manager/SceneManager.js */ \"./src/Manager/SceneManager.js\");\n\r\n\r\n\r\n\r\nfunction gameInit() {\r\n    var background = document.createElement('canvas')\r\n    var context = background.getContext('2d')\r\n\r\n    background.width = 800\r\n    background.height = 600\r\n\r\n    document.body.appendChild(background)\r\n    return context\r\n}\r\n\r\nwindow.onload = function() {\r\n    var sceneManager = new _Manager_SceneManager_js__WEBPACK_IMPORTED_MODULE_1__.default(gameInit())\r\n    sceneManager.runGame()\r\n}\r\n\r\n\r\n\n\n//# sourceURL=webpack://examplegame/./src/index.js?");
 
 /***/ })
 

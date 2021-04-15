@@ -13,5 +13,17 @@ export default class Obstacle {
         }
         this.maxFrameCount = animationFrameCount
         this.currentFrameCount = 0
+        this.visible = true
+    }
+
+    update(backgroundSpeed) {
+        this.currentPosX -= backgroundSpeed
+        if (this.currentPosX <= (this.sizeWidth * (-1))) {
+            this.visible = false
+        }
+    }
+
+    getAnimationFrame() {
+        return Math.floor(this.currentFrameCount / (Math.floor(60 / this.maxFrameCount + 1))) % (this.maxFrameCount + 1)
     }
 }
