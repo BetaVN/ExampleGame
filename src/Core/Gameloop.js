@@ -25,6 +25,7 @@ export default class Gameloop {
         this.scoreManager.reset()
         this.background.reset()
         this.physics.reset()
+        this.input.reset()
     }
 
     processNewInput() {

@@ -3,6 +3,10 @@ export default class Input {
         this.upPressed = false
         this.addInputHandler()
     }
+    
+    reset() {
+        this.upPressed = false
+    }
 
     addInputHandler() {
         document.addEventListener('keydown', (event) => { this.handleDownPressed(event) }, false)
