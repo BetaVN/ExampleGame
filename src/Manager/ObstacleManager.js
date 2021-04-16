@@ -6,7 +6,7 @@ import flameSpriteFile from '../assets/images/obstacle2.png'
 export default class ObstacleManager {
     constructor() {
         this.obstacleList = []
-        this.obstacleGenerationCooldown = 140
+        this.obstacleGenerationCooldown = 90
         this.currentCooldown = 0
     }
 
