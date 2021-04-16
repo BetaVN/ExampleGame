@@ -7,48 +7,51 @@ export default class Player {
         this.currentFrame = 0
         this.jumping = false
         this.descending = false
-        this.currentJumpHeight = 0
-        this.jumpingModifier = 6
-        this.maxJumpHeight = 200
+        this.startingJumpForce = 8
+        this.currentJumpForce = 0
         this.currentPosX = 15
         this.currentPosY = 515
         this.basePosY = 515
         this.sizeWidth = 70
         this.sizeHeight = 70
+        this.jumpGravity = 10
+        this.descendGravity = 200
     }
 
     reset() {
         this.jumping = false
+        this.startingJumpForce = 8
+        this.currentJumpForce = 0
         this.descending = false
-        this.currentJumpHeight = 0
-        this.jumpingModifier = 6
-        this.maxJumpHeight = 200
+        this.currentFrame = 0
         this.currentPosX = 15
         this.currentPosY = 515
     }
 
-    update(input) {
+    update(inputUp, inputDown) {
         this.currentFrame += 1
-        if ((input) && (!this.jumping) && (!this.descending)) {
+        if ((inputUp) && (!this.jumping)) {
             this.jumping = true
+            this.currentJumpForce = this.startingJumpForce
+        }
+        if ((inputDown) && (!this.descending)) {
+            this.descending = true
+            this.currentJumpForce = 0
         }
         if ((this.jumping) && (!this.descending)) {
-            this.currentJumpHeight += this.jumpingModifier
-        }
-        if (this.currentJumpHeight > this.maxJumpHeight) {
-            this.currentJumpHeight = this.maxJumpHeight
-            this.descending = true
-            this.jumping = false
+            this.currentJumpForce -= (this.jumpGravity / 60)
         }
         if (this.descending) {
-            this.currentJumpHeight -= this.jumpingModifier
+            this.currentJumpForce -= (this.descendGravity / 60)
         }
-        if ((this.descending) && (this.currentJumpHeight <= 0)) {
-            this.descending = false
-        }
-        this.currentPosY = this.basePosY - this.currentJumpHeight
+        this.currentPosY = this.currentPosY - this.currentJumpForce
         if (this.currentFrame >= 60) {
             this.currentFrame = 0
+        }
+        if (this.currentPosY > this.basePosY) {
+            this.currentPosY = this.basePosY
+            this.jumping = false
+            this.descending = false
         }
     }
 

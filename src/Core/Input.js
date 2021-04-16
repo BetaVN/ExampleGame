@@ -1,6 +1,7 @@
 export default class Input {
     constructor() {
         this.upPressed = false
+        this.downPressed = false
         this.addInputHandler()
     }
     
@@ -13,16 +14,19 @@ export default class Input {
     }
 
     handleDownPressed(event) {
-        console.log("hmm")
         if (event.keyCode == 38) {
             this.upPressed = true
         }
+        if (event.keyCode == 40) {
+            this.downPressed = true
+        }
     }
     getInputState() {
-        return this.upPressed
+        return [this.upPressed, this.downPressed]
     }
 
     update() {
         this.upPressed = false
+        this.downPressed = false
     }
 }

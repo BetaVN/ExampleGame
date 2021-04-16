@@ -17,6 +17,7 @@ export default class Gameloop {
         this.input = new Input()
         this.background = new Background()
         this.upPressed = false
+        this.downPressed = false
     }
 
     reset() {
@@ -29,11 +30,13 @@ export default class Gameloop {
     }
 
     processNewInput() {
-        this.upPressed = this.input.getInputState()
+        let input = this.input.getInputState()
+        this.upPressed = input[0]
+        this.downPressed = input[1]
     }
 
     updateObjects() {
-        this.player.update(this.upPressed)
+        this.player.update(this.upPressed, this.downPressed)
         this.obstacleManager.update(this.background.backgroundScrollSpeed)
         this.scoreManager.update()
         this.background.update()
