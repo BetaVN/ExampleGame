@@ -12,10 +12,16 @@ export default class Background {
         this.currentPosX = 0
     }
 
-    update() {
-        this.currentPosX -= this.backgroundScrollSpeed
-        if (this.currentPosX <= -800) {
-            this.currentPosX = 0
+    update(elapsedFrame) {
+        for (let i = 0; i < elapsedFrame; i++) {
+            this.currentPosX -= this.backgroundScrollSpeed
+            if (this.currentPosX <= -800) {
+                this.currentPosX = 0
+            }
         }
+    }
+
+    getBackgroundSpeed() {
+        return this.backgroundScrollSpeed
     }
 }

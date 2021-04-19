@@ -28,30 +28,33 @@ export default class Player {
         this.currentPosY = 515
     }
 
-    update(inputUp, inputDown) {
-        this.currentFrame += 1
-        if ((inputUp) && (!this.jumping)) {
-            this.jumping = true
-            this.currentJumpForce = this.startingJumpForce
-        }
-        if ((inputDown) && (!this.descending)) {
-            this.descending = true
-            this.currentJumpForce = 0
-        }
-        if ((this.jumping) && (!this.descending)) {
-            this.currentJumpForce -= (this.jumpGravity / 60)
-        }
-        if (this.descending) {
-            this.currentJumpForce -= (this.descendGravity / 60)
-        }
-        this.currentPosY = this.currentPosY - this.currentJumpForce
-        if (this.currentFrame >= 60) {
-            this.currentFrame = 0
-        }
-        if (this.currentPosY > this.basePosY) {
-            this.currentPosY = this.basePosY
-            this.jumping = false
-            this.descending = false
+    update(elapsedFrame, playerInput) {
+        for (let i = 0; i < elapsedFrame; i++) {
+            this.currentFrame += 1
+            if ((playerInput[0]) && (!this.jumping)) {
+                this.jumping = true
+                this.currentJumpForce = this.startingJumpForce
+            }
+            if ((playerInput[1]) && (!this.descending)) {
+                this.descending = true
+                this.currentJumpForce = 0
+            }
+            if ((this.jumping) && (!this.descending)) {
+                this.currentJumpForce -= (this.jumpGravity / 60)
+            }
+            if (this.descending) {
+                this.currentJumpForce -= (this.descendGravity / 60)
+            }
+            this.currentPosY = this.currentPosY - this.currentJumpForce
+            if (this.currentFrame >= 60) {
+                this.currentFrame = 0
+            }
+            
+            if (this.currentPosY > this.basePosY) {
+                this.currentPosY = this.basePosY
+                this.jumping = false
+                this.descending = false
+            }
         }
     }
 

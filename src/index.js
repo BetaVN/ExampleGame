@@ -1,5 +1,5 @@
 import _, { forEach } from 'lodash'
-import SceneManager from './Manager/SceneManager.js'
+import Gameloop from './Core/Gameloop.js'
 
 
 function gameInit() {
@@ -14,8 +14,11 @@ function gameInit() {
 }
 
 window.onload = function() {
-    var sceneManager = new SceneManager(gameInit())
-    sceneManager.runGame()
+    var gameloop = new Gameloop()
+    gameloop.assignContext(gameInit())
+    requestAnimationFrame(() => {
+        gameloop.runGameLoop()
+    })
 }
 
 

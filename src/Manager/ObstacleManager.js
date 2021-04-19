@@ -41,11 +41,14 @@ export default class ObstacleManager {
         })
     }
 
-    update(backgroundSpeed) {
-        this.obstacleGeneration()
-        this.obstacleList.forEach(obstacle => {
-            obstacle.update(backgroundSpeed)
-        })
-        this.removeInvalidObstacles()
+    update(elapsedFrame, backgroundSpeed) {
+        for (let i = 0; i < elapsedFrame; i++) {
+            this.obstacleGeneration()
+            this.obstacleList.forEach(obstacle => {
+                obstacle.update(backgroundSpeed)
+            })
+            this.removeInvalidObstacles()
+        }
+        
     }
 }

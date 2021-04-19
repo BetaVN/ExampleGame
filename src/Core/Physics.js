@@ -17,4 +17,8 @@ export default class Physics {
                 }
         })
     }
+
+    getCollisionStatus() {
+        return this.collisionDetected
+    }
 }

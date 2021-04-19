@@ -7,6 +7,7 @@ export default class Input {
     
     reset() {
         this.upPressed = false
+        this.downPressed = false
     }
 
     addInputHandler() {
