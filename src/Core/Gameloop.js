@@ -11,7 +11,6 @@ export default class Gameloop {
     constructor() {
         this.context = null
         this.renderer = new Renderer()
-        this.input = new Input()
         this.sceneManager = new SceneManager()
         this.playerInput = []
         this.time = performance.now()
@@ -21,21 +20,13 @@ export default class Gameloop {
     assignContext(context) {
         this.renderer.assignContext(context)
     }
-
-    restart() {
-        this.physics.reset()
-        this.input.reset()
-    }
-
+    
     processNewInput() {
-        let input = this.input.getInputState()
-        this.upPressed = input[0]
-        this.downPressed = input[1]
+
     }
 
     updateObjects() {
-        this.sceneManager.update(this.time, this.delta, [this.upPressed, this.downPressed])
-        this.input.reset()
+        this.sceneManager.update(this.time, this.delta)
     }
 
     render() {

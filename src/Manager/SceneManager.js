@@ -25,9 +25,9 @@ export default class SceneManager {
         this.currentScene = 2
     }
 
-    update(time, delta, playerInput) {
+    update(time, delta) {
         if (this.currentScene == 1) {
-            this.gameplayScene.update(time, delta, playerInput)
+            this.gameplayScene.update(time, delta)
         }
     }
 
